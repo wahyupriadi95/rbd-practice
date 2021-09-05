@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import Column from './components/Column'
-import './App.css';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 const initialData = {
   tasks: {
@@ -41,21 +41,23 @@ const App = () => {
   const [list, setList] = useState(initialData)
 
   return (
-    <Container>
-      {list.columnOrder.map((columnId, index) => {
-        const column = list.columns[columnId]
-        const tasks = column.taskIds.map(taskId => list.tasks[taskId])
-        return (
-          <Column
-            key={column.id}
-            index={index}
-            column={column}
-            tasks={tasks}
-          />
-        )
-      })
-      }
-    </Container>
+    <DragDropContext>
+      <Container>
+        {list.columnOrder.map((columnId, index) => {
+          const column = list.columns[columnId]
+          const tasks = column.taskIds.map(taskId => list.tasks[taskId])
+          return (
+            <Column
+              key={column.id}
+              index={index}
+              column={column}
+              tasks={tasks}
+            />
+          )
+        })
+        }
+      </Container>
+    </DragDropContext>
   );
 }
 

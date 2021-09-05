@@ -1,4 +1,5 @@
 import React from 'react'
+import { Droppable } from 'react-beautiful-dnd'
 import styled from 'styled-components'
 import Task from './Task'
 
@@ -27,21 +28,29 @@ const TaskList = styled.div`
   min-height: 100px;
 `
 
-const Column = ({ column, tasks}) => {
+const Column = ({ column, tasks }) => {
   return (
     <Wrapper>
-      <Container>
-        <Title>{column.title}</Title>
-        <TaskList>
-          {tasks.map((task, index) => (
-            <Task
-              key={task.id}
-              task={task}
-              index={index}
-            />
-          ))}
-        </TaskList>
-      </Container>
+      <Droppable droppableId={column.id} type="task">
+        {(provided) =>
+          <Container>
+            <Title>{column.title}</Title>
+            <TaskList
+              ref={provided.innerRef} //supply DOM node
+              {...provided.droppableProps} //assign the component to be an element where draggable component could drops
+            >
+              {tasks.map((task, index) => (
+                <Task
+                  key={task.id}
+                  task={task}
+                  index={index} //task order
+                />
+              ))}
+              {provided.placeholder} {/* provide leftover space when draggable moves */}
+            </TaskList>
+          </Container>
+        }
+      </Droppable>
     </Wrapper>
   )
 }
