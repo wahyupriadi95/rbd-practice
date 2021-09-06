@@ -24,7 +24,7 @@ const Task = ({ task, index }) => {
           {...provided.draggableProps} //assign the component to be draggable
           {...provided.dragHandleProps} //the handle of element capable to move the draggable 
           ref={provided.innerRef} //supply DOM node
-          isDragging={snapshot.isDragging}
+          isDragging={snapshot.isDragging} //state when task is dragging by
         >
           <Title>{task.content}</Title>
         </Container>
