@@ -16,15 +16,15 @@ const Title = styled.div`
 const Task = ({ task, index }) => {
   return (
     <Draggable
-      draggableId={task.id} //act like a key
-      index={index} //task order
+      draggableId={task.id}
+      index={index}
     >
       {(provided, snapshot) =>
         <Container
-          {...provided.draggableProps} //assign the component to be draggable
-          {...provided.dragHandleProps} //the handle of element capable to move the draggable 
-          ref={provided.innerRef} //supply DOM node
-          isDragging={snapshot.isDragging} //state when task is dragging by
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+          isDragging={snapshot.isDragging}
         >
           <Title>{task.content}</Title>
         </Container>

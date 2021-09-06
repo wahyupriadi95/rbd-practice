@@ -40,8 +40,42 @@ const Container = styled.div`
 const App = () => {
   const [list, setList] = useState(initialData)
 
+  const handleDragEnd = (end) => {
+
+    const { destination, source, draggableId, type } = end
+
+    if (!destination) return // destination not found
+    if (destination.droppableId === source.droppableId && destination.index === source.index) return //destination has same index
+
+    const sourceColumn = list.columns[source.droppableId] //get data of source columns
+    const destinationColumn = list.columns[destination.droppableId] //get data of destination columns
+
+    if (sourceColumn === destinationColumn && type === 'task') { // moving within same column
+      const newTaskIds = Array.from(sourceColumn.taskIds) //assign new array for the list
+      newTaskIds.splice(source.index, 1) //remove item from this index
+      newTaskIds.splice(destination.index, 0, draggableId) //insert this index a moved item
+
+      const newColumn = {
+        ...sourceColumn,
+        taskIds: newTaskIds
+      } //update column 
+
+      setList({
+        ...list,
+        columns: {
+          ...list.columns,
+          [newColumn.id]: newColumn
+        }
+      })
+      return
+    }
+
+  }
+
   return (
-    <DragDropContext>
+    <DragDropContext
+      onDragEnd={handleDragEnd}
+    >
       <Container>
         {list.columnOrder.map((columnId, index) => {
           const column = list.columns[columnId]

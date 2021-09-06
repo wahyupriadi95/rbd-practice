@@ -34,21 +34,21 @@ const Column = ({ column, tasks }) => {
       <Droppable droppableId={column.id} type="task">
         {(provided, snapshot) =>
           <Container
-            isDraggingOver={snapshot.isDraggingOver} //state when task is hover above the target column
+            isDraggingOver={snapshot.isDraggingOver}
           >
             <Title>{column.title}</Title>
             <TaskList
-              ref={provided.innerRef} //supply DOM node
-              {...provided.droppableProps} //assign the component to be an element where draggable component could drops
+              ref={provided.innerRef}
+              {...provided.droppableProps}
             >
               {tasks.map((task, index) => (
                 <Task
                   key={task.id}
                   task={task}
-                  index={index} //task order
+                  index={index}
                 />
               ))}
-              {provided.placeholder} {/* provide leftover space when draggable moves */}
+              {provided.placeholder}
             </TaskList>
           </Container>
         }
