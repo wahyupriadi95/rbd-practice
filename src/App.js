@@ -5,10 +5,10 @@ import { DragDropContext } from 'react-beautiful-dnd';
 
 const initialData = {
   tasks: {
-    'task-1': { id: 'task-1', content: 'Make Components' },
-    'task-2': { id: 'task-2', content: 'Create Homepage' },
-    'task-3': { id: 'task-3', content: 'Build Login Page' },
-    'task-4': { id: 'task-4', content: 'Optimization' },
+    'task-1': { id: 'task-1', content: 'Take out the garbage', dragDisabled: false },
+    'task-2': { id: 'task-2', content: 'Watch my favorite show', dragDisabled: true },
+    'task-3': { id: 'task-3', content: 'Charge my phone', dragDisabled: false },
+    'task-4': { id: 'task-4', content: 'Cook dinner', dragDisabled: false },
   },
   columns: {
     'column-1': {
@@ -44,21 +44,21 @@ const App = () => {
 
     const { destination, source, draggableId, type } = end
 
-    if (!destination) return // destination not found
-    if (destination.droppableId === source.droppableId && destination.index === source.index) return //destination has same index
+    if (!destination) return
+    if (destination.droppableId === source.droppableId && destination.index === source.index) return
 
-    const sourceColumn = list.columns[source.droppableId] //get data of source columns
-    const destinationColumn = list.columns[destination.droppableId] //get data of destination columns
+    const sourceColumn = list.columns[source.droppableId]
+    const destinationColumn = list.columns[destination.droppableId]
 
-    if (sourceColumn === destinationColumn && type === 'task') { // moving within same column
-      const newTaskIds = Array.from(sourceColumn.taskIds) //assign new array for the list
-      newTaskIds.splice(source.index, 1) //remove item from this index
-      newTaskIds.splice(destination.index, 0, draggableId) //insert this index a moved item
+    if (sourceColumn === destinationColumn && type === 'task') {
+      const newTaskIds = Array.from(sourceColumn.taskIds)
+      newTaskIds.splice(source.index, 1)
+      newTaskIds.splice(destination.index, 0, draggableId)
 
       const newColumn = {
         ...sourceColumn,
         taskIds: newTaskIds
-      } //update column 
+      }
 
       setList({
         ...list,
