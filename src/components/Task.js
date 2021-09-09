@@ -1,10 +1,11 @@
 import React from 'react'
+import { Draggable } from 'react-beautiful-dnd'
 import styled from 'styled-components'
 
 const Container = styled.div`
   padding: 1rem;
   margin-top: 0.5rem;
-  background-color: #2a93d6;
+  background-color: ${({ isDragging, isTaskDisabled }) => isTaskDisabled ? '#9e9e9e' :  isDragging ? '#175586' : '#2a93d6'}; /* change color when disabled */
 `
 
 const Title = styled.div`
@@ -12,12 +13,25 @@ const Title = styled.div`
   color: #ffffff;
 `
 
-const Task = ({ task }) => {
+const Task = ({ task, index }) => {
   return (
-    <Container>
-      <Title>{task.content}</Title>
-    </Container>
-
+    <Draggable
+      draggableId={task.id}
+      index={index}
+      isDragDisabled={task.dragDisabled}
+    >
+      {(provided, snapshot) =>
+        <Container
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+          isDragging={snapshot.isDragging}
+          isTaskDisabled={task.dragDisabled}
+        >
+          <Title>{task.content}</Title>
+        </Container>
+      }
+    </Draggable>
   )
 }
 
