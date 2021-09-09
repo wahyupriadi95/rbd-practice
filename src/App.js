@@ -47,11 +47,13 @@ const App = () => {
     if (!destination) return
     if (destination.droppableId === source.droppableId && destination.index === source.index) return
 
-    //column drag function
+    /**
+     * this condition when draggable item is column-type
+     */
     if (type === 'column'){
       const newColumnOrder = Array.from(list.columnOrder)
-      newColumnOrder.splice(source.index, 1) //remove item from this index
-      newColumnOrder.splice(destination.index, 0, draggableId) //insert this index a moved item
+      newColumnOrder.splice(source.index, 1)
+      newColumnOrder.splice(destination.index, 0, draggableId)
       setList({
         ...list,
         columnOrder: newColumnOrder
@@ -59,9 +61,13 @@ const App = () => {
       return
     }
 
+    /**
+     * this condition when draggable item is task-type
+     */
     const sourceColumn = list.columns[source.droppableId]
     const destinationColumn = list.columns[destination.droppableId]
 
+    /** if movement is inside same column */
     if (sourceColumn === destinationColumn && type === 'task') {
       const newTaskIds = Array.from(sourceColumn.taskIds)
       newTaskIds.splice(source.index, 1)
@@ -81,7 +87,8 @@ const App = () => {
       })
       return
     }
-
+    
+    /** if movement is inter-column */
     const sourceTaskIds = Array.from(sourceColumn.taskIds)
     sourceTaskIds.splice(source.index, 1)
     const newSource = {
@@ -114,7 +121,7 @@ const App = () => {
     >
       <Droppable
         droppableId="all-columns"
-        direction="horizontal" //props for horizontal movement
+        direction="horizontal"
         type="column"
       > 
         {(provided) => (
@@ -134,7 +141,7 @@ const App = () => {
                 />
               )
             })}
-            {provided.placeholder /* give space when column is dragging by */} 
+            {provided.placeholder} 
           </Container>
         )}
       </Droppable>

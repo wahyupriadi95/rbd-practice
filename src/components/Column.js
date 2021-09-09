@@ -45,7 +45,7 @@ const Column = ({ column, tasks, index }) => {
                 isDraggingOver={snapshot.isDraggingOver}
               >
                 <Title
-                  {...columnProvided.dragHandleProps} /* handle drag column*/ >{column.title}</Title> 
+                  {...columnProvided.dragHandleProps}>{column.title}</Title> 
                 <TaskList
                   ref={provided.innerRef}
                   {...provided.droppableProps}

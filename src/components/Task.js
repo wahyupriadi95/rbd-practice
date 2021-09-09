@@ -5,7 +5,7 @@ import styled from 'styled-components'
 const Container = styled.div`
   padding: 1rem;
   margin-top: 0.5rem;
-  background-color: ${({ isDragging, isTaskDisabled }) => isTaskDisabled ? '#9e9e9e' :  isDragging ? '#175586' : '#2a93d6'}; /* change color when disabled */
+  background-color: ${({ isDragging, isTaskDisabled }) => isTaskDisabled ? '#9e9e9e' :  isDragging ? '#175586' : '#2a93d6'};
 `
 
 const Title = styled.div`
@@ -16,8 +16,8 @@ const Title = styled.div`
 const Task = ({ task, index }) => {
   return (
     <Draggable
-      draggableId={task.id}
-      index={index}
+      draggableId={task.id} //task id
+      index={index} //task order
       isDragDisabled={task.dragDisabled}
     >
       {(provided, snapshot) =>
