@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import Column from './components/Column'
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 const initialData = {
   tasks: {
@@ -47,6 +47,18 @@ const App = () => {
     if (!destination) return
     if (destination.droppableId === source.droppableId && destination.index === source.index) return
 
+    //column drag function
+    if (type === 'column'){
+      const newColumnOrder = Array.from(list.columnOrder)
+      newColumnOrder.splice(source.index, 1) //remove item from this index
+      newColumnOrder.splice(destination.index, 0, draggableId) //insert this index a moved item
+      setList({
+        ...list,
+        columnOrder: newColumnOrder
+      })
+      return
+    }
+
     const sourceColumn = list.columns[source.droppableId]
     const destinationColumn = list.columns[destination.droppableId]
 
@@ -70,16 +82,15 @@ const App = () => {
       return
     }
 
-    // moving into other column
-    const sourceTaskIds = Array.from(sourceColumn.taskIds) //assign new array for the list
-    sourceTaskIds.splice(source.index, 1) //remove item from this index
+    const sourceTaskIds = Array.from(sourceColumn.taskIds)
+    sourceTaskIds.splice(source.index, 1)
     const newSource = {
       ...sourceColumn,
       taskIds: sourceTaskIds
     }
 
-    const destinationTaskIds = Array.from(destinationColumn.taskIds) //assign new array for the list
-    destinationTaskIds.splice(destination.index, 0, draggableId) //insert this index a moved item
+    const destinationTaskIds = Array.from(destinationColumn.taskIds)
+    destinationTaskIds.splice(destination.index, 0, draggableId)
     const newDestination = {
       ...destinationColumn,
       taskIds: destinationTaskIds
@@ -101,21 +112,32 @@ const App = () => {
     <DragDropContext
       onDragEnd={handleDragEnd}
     >
-      <Container>
-        {list.columnOrder.map((columnId, index) => {
-          const column = list.columns[columnId]
-          const tasks = column.taskIds.map(taskId => list.tasks[taskId])
-          return (
-            <Column
-              key={column.id}
-              index={index}
-              column={column}
-              tasks={tasks}
-            />
-          )
-        })
-        }
-      </Container>
+      <Droppable
+        droppableId="all-columns"
+        direction="horizontal" //props for horizontal movement
+        type="column"
+      > 
+        {(provided) => (
+          <Container
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {list.columnOrder.map((columnId, index) => {
+              const column = list.columns[columnId]
+              const tasks = column.taskIds.map(taskId => list.tasks[taskId])
+              return (
+                <Column
+                  key={column.id}
+                  index={index}
+                  column={column}
+                  tasks={tasks}
+                />
+              )
+            })}
+            {provided.placeholder /* give space when column is dragging by */} 
+          </Container>
+        )}
+      </Droppable>
     </DragDropContext>
   );
 }
