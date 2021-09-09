@@ -18,7 +18,7 @@ const Task = ({ task, index }) => {
     <Draggable
       draggableId={task.id}
       index={index}
-      isDragDisabled={task.dragDisabled} //disable or enable dragging
+      isDragDisabled={task.dragDisabled}
     >
       {(provided, snapshot) =>
         <Container
@@ -26,7 +26,7 @@ const Task = ({ task, index }) => {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
           isDragging={snapshot.isDragging}
-          isTaskDisabled={task.dragDisabled} //change style when draggable disabled
+          isTaskDisabled={task.dragDisabled}
         >
           <Title>{task.content}</Title>
         </Container>

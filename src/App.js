@@ -70,6 +70,31 @@ const App = () => {
       return
     }
 
+    // moving into other column
+    const sourceTaskIds = Array.from(sourceColumn.taskIds) //assign new array for the list
+    sourceTaskIds.splice(source.index, 1) //remove item from this index
+    const newSource = {
+      ...sourceColumn,
+      taskIds: sourceTaskIds
+    }
+
+    const destinationTaskIds = Array.from(destinationColumn.taskIds) //assign new array for the list
+    destinationTaskIds.splice(destination.index, 0, draggableId) //insert this index a moved item
+    const newDestination = {
+      ...destinationColumn,
+      taskIds: destinationTaskIds
+    }
+
+    setList({
+      ...list,
+      columns: {
+        ...list.columns,
+        [newSource.id]: newSource,
+        [newDestination.id]: newDestination
+      }
+    })
+    return
+
   }
 
   return (
